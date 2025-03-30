@@ -17,10 +17,10 @@ class Wayland:
             wayland.wl_registry.bind(name, interface, version, name)
             wayland.hyprland_lock_notifier_v1.get_lock_notification()
 
-    def __on_lock(self):
+    def __on_hyprland_lock(self):
         gl.signal_manager.trigger_signal(WaylandSignals.HyprlandLock)
 
-    def __on_unlock(self):
+    def __on_hyprland_unlock(self):
         gl.signal_manager.trigger_signal(WaylandSignals.HyprlandUnlock)
 
     def __on_quit(self):
@@ -41,8 +41,8 @@ class Wayland:
         gl.signal_manager.connect_signal(AppQuit, self.__on_quit)
 
         wayland.wl_registry.events.global_ += self.__on_wl_registry_global
-        wayland.hyprland_lock_notification_v1.events.locked += self.__on_lock
-        wayland.hyprland_lock_notification_v1.events.unlocked += self.__on_unlock
+        wayland.hyprland_lock_notification_v1.events.locked += self.__on_hyprland_lock
+        wayland.hyprland_lock_notification_v1.events.unlocked += self.__on_hyprland_unlock
 
         wayland.wl_display.get_registry()
 
